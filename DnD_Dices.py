@@ -13,8 +13,7 @@ ex = True  # While True Loop Menu
 dices = []  # List to save dice value
 d_nums = 0  # number of dices
 dice = 0  # dice art
-cancel_roll = 0  # 1 cancel roll sektion for illegal input
-
+cancel_roll = 0  # 1 cancel roll sektion after illegal input
 ###############################| Dictornary |##################################################
 
 # Menu Dictornaries
@@ -31,7 +30,7 @@ menu_options = {
 
 after_roll_menu_options = {
     1: 'roll again',
-    2: 'Selection',
+    2: 'back to Selection',
     3: 'Exit',
 }
 
@@ -45,8 +44,6 @@ def menu(count, menu_options):
         print(count, '--', menu_options[count])
 
 # input loop
-#
-#    menu(8, menu_options)
 #    user_choice = input("Your choice? ")
 #    text_error_mm = "Enter a number between 1 and 8!\n"
 #    choice = int_input_error(user_choice, text_error_mm)
@@ -61,14 +58,13 @@ def int_input_error(input_var, error_message_text):
         except ValueError:
             print(error_message_text)
             break
-        else:
-            break
-
 
 ##############################| Menu call |##################################################
+
+
 while(ex):
     menu(8, menu_options)
-    user_choice = input("Your choice? ")
+    user_choice = input("Your choice? (1 = default)") or 1
     text_error_mm = "Enter a number between 1 and 8!\n"
     choice = int_input_error(user_choice, text_error_mm)
 
@@ -92,10 +88,9 @@ while(ex):
         print(text_error_mm)
         continue
 
-    user_d_nums = input(f"How many D{dice} do you want to throw?")
+    user_d_nums = input(f"How many D{dice} do you want to throw? (1 = default)") or 1
     text_error_nums = "Enter a integer\n"
     d_nums = int_input_error(user_d_nums, text_error_nums)
-
 
 ###############################| After Roll |##################################################
 
@@ -105,27 +100,24 @@ while(ex):
                 ds = random.randint(1, dice)  # dice result for i in rang of dice number
                 dices.append(ds)
                 print(f"You roll {d_nums} D{dice} dice/n \n\nResult: {dices}\n\n\n")
-        else:  # catch wron input with var cancel_roll
+        else:  # don't roll after illegal input (var cancel_roll == 1)
             print("Your selection must be between 1 and 3!\n")
             pass
 
         menu(3, after_roll_menu_options)
-        user_after_roll = input("Your choice? ")
+        user_after_roll = input("Your choice? (1 = default)") or 1
         text_error_after = "Your selection must be between 1 and 3!\n"
         after_roll = int_input_error(user_after_roll, text_error_after)
         print("\n\n")
 
         if after_roll == 1:
             cancel_roll = 0
-            del dices[0:d_nums]  # delete all entries in list
+            del dices[0:d_nums]
         elif after_roll == 2:
             del dices[0:d_nums]
             break
         elif after_roll == 3:
-            exit()
+            exit(0)
         else:  # catch wrong input
             del dices[0:d_nums]
             cancel_roll = 1
-
-ex = True  # start while loop menu call
-del dices[0:d_nums]
